@@ -2,13 +2,13 @@ package controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 import model.Bank;
-import persistence.bankAccounts.JdbcAccountsPersistence;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet("/transaction")
 public class TransactionServlet extends HttpServlet {
 		
-	private Bank bank = Bank.getInstance();
+	private final Bank bank = Bank.getInstance();
 	
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {    	

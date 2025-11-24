@@ -1,7 +1,5 @@
 package security.exceptions;
 
-import model.User;
-
 /**
 *
 * @author ouziri

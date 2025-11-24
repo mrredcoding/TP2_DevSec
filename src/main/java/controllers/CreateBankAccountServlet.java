@@ -2,18 +2,17 @@ package controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 import model.Bank;
 import model.User;
-import model.exceptions.UserNotFoundException;
 import security.Authentication;
 import security.exceptions.UserAthenticationException;
 import security.exceptions.UserAthorizationException;
 
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.Authenticator.RequestorType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +64,10 @@ public class CreateBankAccountServlet extends HttpServlet {
         //resp.addCookie(new Cookie("q", "secret"));
         try {
             Account a = bank.createAccount(clientEmail);
-            List<Account> accounts = new ArrayList<Account>();
+            List<Account> accounts = new ArrayList<>();
             accounts.add(a);
 			request.setAttribute("accounts", accounts);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         request.getRequestDispatcher("./view/view_accounts.jsp").forward(request, response);
     }

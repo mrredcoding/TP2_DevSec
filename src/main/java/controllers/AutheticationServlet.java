@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.exceptions.LimiteNbRequestsExceededException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -7,8 +8,6 @@ import model.Bank;
 import model.User;
 
 import java.io.IOException;
-
-import controllers.exceptions.LimiteNbRequestsExceededException;
 
 /**
  *

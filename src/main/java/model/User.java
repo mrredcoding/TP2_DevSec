@@ -1,49 +1,47 @@
 package model;
 
-/**
-*
-* @author ouziri
-* @version 0.1
-*/
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "users")
 public class User {
-	private String email;
-	private String name;
-	private String password;
-	private String roles;
 
-	// to database
-	public User(String email, String name, String password, String roles) {
-		this.email = email;
-		this.name = name;
-		this.password = password;
-		this.roles = roles;
-	}
+    @Id
+    @Column(length = 100)
+    private String email;
 
-	// from database
-	public User(String email, String name, String roles) {
-		this.email = email;
-		this.name = name;			
-		this.roles = roles;
-	}
+    @Column(nullable = false)
+    private String name;
 
-	public String getEmail() {
-		return email;
-	}
+    @Column(nullable = false)
+    private String password;
 
-	public String getName() {
-		return name;
-	}
+    @Column(nullable = false)
+    private String roles;
 
-	public String getPassword() {
-		return password;
-	}
+    protected User() {}
 
-	public String getRoles() {
-		return roles;
-	}
-	
-	public boolean isAdmin() {
-		return this.roles.toUpperCase().contains("ADMIN");
-	}
+    public User(String email, String name, String password, String roles) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String email, String name, String roles) {
+        this.email = email;
+        this.name = name;
+        this.roles = roles;
+    }
+
+    public String getEmail() { return email; }
+    public String getName() { return name; }
+    public String getPassword() { return password; }
+    public String getRoles() { return roles; }
+    public boolean isAdmin() {
+        return roles.toUpperCase().contains("ADMIN");
+    }
 }
