@@ -9,8 +9,8 @@ import model.Account;
 import model.Bank;
 import model.User;
 import security.Authentication;
-import security.exceptions.UserAthenticationException;
-import security.exceptions.UserAthorizationException;
+import exceptions.UserAuthenticationException;
+import exceptions.UserAuthorizationException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,12 +45,12 @@ public class CreateBankAccountServlet extends HttpServlet {
 			System.out.println(user.getRoles());
 			authentication.getAuthorization (user, authorizedRoles);
 			super.service(request, response);
-		} catch (UserAthenticationException e) {
+		} catch (UserAuthenticationException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			request.setAttribute("error", "Vous n'êtes pas connecté !");	// petit probleme d'architecture (rôle) à corriger facultativement !
 			request.getRequestDispatcher("./view/error.jsp").forward(request, response);
-		} catch (UserAthorizationException e) {
+		} catch (UserAuthorizationException e) {
 			request.setAttribute("error", "Vous n'avez las autorisations requises !");
 			request.getRequestDispatcher("./view/error.jsp").forward(request, response);
 			//e.printStackTrace();

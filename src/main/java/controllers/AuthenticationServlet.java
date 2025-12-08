@@ -19,7 +19,7 @@ import java.io.IOException;
 public class AuthenticationServlet extends HttpServlet {
 
 	private Bank bank = Bank.getInstance();		// classe du Modele MVC implémentant les spécifications fonctionnelles
-	
+
 	private static final int LIMIT = 3; 			// nombre de requêtes acceptées par intervalle de temps glissant (DELAI_SECONDES)
     private static final int DELAI_SECONDES = 60; // intervalle de temps de la limite du nombre de requêtes
 
@@ -28,7 +28,7 @@ public class AuthenticationServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		String message=null;
 		try {
-			this.limiteRequetes(request, response);	// limite du nombre de requêtes aceptées par intervalle de temps glissant
+			this.limit9eRequetes(request, response);	// limite du nombre de requêtes aceptées par intervalle de temps glissant
 			if ("login".equals(action)) {
 				String username = request.getParameter("pUserEmail");
 				String password = request.getParameter("pUserPwd");
