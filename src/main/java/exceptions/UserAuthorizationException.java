@@ -4,11 +4,13 @@ import model.User;
 
 /**
 *
-* @author ouziri
-* @version 0.1
+ * @author Alonso Cédric
+ * @author Gomez Guillaume
+ * @version 1.0
 */
 
-public class UserAthorizationException extends Exception {
+@ResponseStatus(status=403, reason="Forbidden")
+public class UserAuthorizationException extends BaseException {
 	
 	private User user;
 

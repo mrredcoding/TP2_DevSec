@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 
 @WebServlet("/auth")
-public class AutheticationServlet extends HttpServlet {
+public class AuthenticationServlet extends HttpServlet {
 
 	private Bank bank = Bank.getInstance();		// classe du Modele MVC implémentant les spécifications fonctionnelles
 	
