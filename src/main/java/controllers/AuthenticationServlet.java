@@ -1,6 +1,6 @@
 package controllers;
 
-import controllers.exceptions.LimiteNbRequestsExceededException;
+import exceptions.LimitNbRequestsExceededException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -20,21 +20,21 @@ public class AuthenticationServlet extends HttpServlet {
 
 	private Bank bank = Bank.getInstance();		// classe du Modele MVC implémentant les spécifications fonctionnelles
 	
-	private static final int LIMITE = 3; 			// nombre de requêtes acceptées par intervalle de temps glissant (DELAI_SECONDES)
-    private static final int DELAI_SECONDES = 60; // intervalle de temps de la limite du nombre de requêtes 
- 
+	private static final int LIMIT = 3; 			// nombre de requêtes acceptées par intervalle de temps glissant (DELAI_SECONDES)
+    private static final int DELAI_SECONDES = 60; // intervalle de temps de la limite du nombre de requêtes
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String message=null;
 		try {
-			this.limiteRequetes(request, response);	// limite du nombre de requêtes aceptées par intervalle de temps glissant  
+			this.limiteRequetes(request, response);	// limite du nombre de requêtes aceptées par intervalle de temps glissant
 			if ("login".equals(action)) {
 				String username = request.getParameter("pUserEmail");
 				String password = request.getParameter("pUserPwd");
 				User user;
 				try {
-					user = bank.validateUserByEmailPassword(username, password);				
+					user = bank.validateUserByEmailPassword(username, password);
 					HttpSession session = request.getSession(true);
 					session.setAttribute("principal", user);
 					Cookie roleCookie = new Cookie("ClientRole", user.isAdmin() ? "ADMIN" : "CLIENT");
@@ -58,12 +58,12 @@ public class AuthenticationServlet extends HttpServlet {
 				message = "Successful logout!";
 				response.sendRedirect("./index.jsp?messageType=success&message="+message);
 			}
-		} catch (LimiteNbRequestsExceededException e) {
+		} catch (LimitNbRequestsExceededException e) {
 			response.sendRedirect("./index.jsp?messageType=error&message="+e.getMessage());
 		}
 	}
-	
-	private void limiteRequetes(HttpServletRequest request, HttpServletResponse response) throws IOException, LimiteNbRequestsExceededException {
+
+	private void limit9eRequetes(HttpServletRequest request, HttpServletResponse response) throws IOException, LimitNbRequestsExceededException {
 		int nbRequetes = 0;
         long debutDelai = System.currentTimeMillis();
 
@@ -84,11 +84,11 @@ public class AuthenticationServlet extends HttpServlet {
             nbRequetes++;
         }
 
-        if (nbRequetes > LIMITE) {
+        if (nbRequetes > LIMIT) {
             response.setStatus(429);
-            
-            String message = "Request limit has been reached (" + LIMITE + " requests/minute) !";
-            throw new LimiteNbRequestsExceededException (message);
+
+            String message = "Request limit has been reached (" + LIMIT + " requests/minute) !";
+            throw new LimitNbRequestsExceededException();
 			//response.sendRedirect("./index.jsp?messageType=error&message="+message);
             //return;
         }
@@ -103,11 +103,11 @@ public class AuthenticationServlet extends HttpServlet {
         response.addCookie(newNbCookie);
         response.addCookie(newDebutCookie);
 
-//        response.getWriter().write("Requête acceptée (" + nbRequetes + "/" + LIMITE + " pour cette minute)");
-//        String message = "Limite de requêtes atteinte (" + LIMITE + " requêtes/minute) !";
+//        response.getWriter().write("Requête acceptée (" + nbRequetes + "/" + LIMIT + " pour cette minute)");
+//        String message = "Limite de requêtes atteinte (" + LIMIT + " requêtes/minute) !";
 //		response.sendRedirect("./index.jsp?messageType=error&message="+message);
 	}
-	
+
 	private Cookie rechercherCookie(HttpServletRequest request, String cookieName) {
 	    Cookie[] cookies = request.getCookies();
 	    if (cookies == null)

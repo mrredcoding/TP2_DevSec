@@ -1,6 +1,6 @@
 package security.filters;
 
-public class LogoutFilter implements InternalFilter {
+public class RateLimitFilter implements InternalFilter {
     @Override
     public void doFilter() {
 

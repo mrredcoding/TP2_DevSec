@@ -12,6 +12,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ResponseStatus {
-    Integer value();
-    String reason() default "Server Error";
+    int status();
+    String reason();
 }

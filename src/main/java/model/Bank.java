@@ -1,6 +1,6 @@
 package model;
 
-import model.exceptions.UserNotFoundException;
+import exceptions.UserNotFoundException;
 import persistence.IPersistence;
 import persistence.hibernate.HibernateMainPersistence;
 

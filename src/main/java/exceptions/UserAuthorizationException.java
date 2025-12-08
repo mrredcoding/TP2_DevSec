@@ -1,5 +1,7 @@
-package security.exceptions;
+package exceptions;
 
+import exceptions.BaseException;
+import exceptions.ResponseStatus;
 import model.User;
 
 /**
@@ -9,17 +11,10 @@ import model.User;
  * @version 1.0
 */
 
-@ResponseStatus(status=403, reason="Forbidden")
+@ResponseStatus(status=401, reason="Unauthorized")
 public class UserAuthorizationException extends BaseException {
-	
-	private User user;
 
-	public UserAthorizationException(User user) {
-		this.user = user;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-
+    public UserAuthorizationException() {
+        super("You are not authorized to perform this operation.");
+    }
 }

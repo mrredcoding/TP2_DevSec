@@ -1,4 +1,6 @@
-package security.exceptions;
+package exceptions;
+
+import exceptions.BaseException;
 
 /**
 *
@@ -10,6 +12,6 @@ package security.exceptions;
 @ResponseStatus(status=401, reason="Unauthorized")
 public class UserAuthenticationException extends BaseException {
     public UserAuthenticationException () {
-        super("You are not authorized to access this resource.")
+        super("You are not authorized to access this resource.");
     }
 }

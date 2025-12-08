@@ -1,4 +1,4 @@
-package controllers.exceptions;
+package exceptions;
 
 /**
 *
@@ -8,11 +8,11 @@ package controllers.exceptions;
 */
 
 @ResponseStatus(status=429 , reason="Too Many Requests")
-public class LimiteNbRequestsExceededException extends BaseException {
+public class LimitNbRequestsExceededException extends BaseException {
 
-    private final Integer LIMIT = 3
+    private static final Integer LIMIT = 3;
 
-	public LimiteNbRequestsExceededException(String message) {
+	public LimitNbRequestsExceededException() {
 		super ("Request limit has been reached (" + LIMIT + " requests/minute) !");
 	}
 }
