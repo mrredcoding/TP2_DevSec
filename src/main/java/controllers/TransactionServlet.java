@@ -1,43 +1,39 @@
 package controllers;
 
-import jakarta.servlet.ServletException;
+import exceptions.BaseException;
+import exceptions.GlobalExceptionHandler;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
 import model.Bank;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
-*
-* @author ouziri
-* @version 0.1
-*/
-
-@WebServlet("/transaction")
+@WebServlet("/accounts/transfer")
 public class TransactionServlet extends HttpServlet {
-		
-	private final Bank bank = Bank.getInstance();
-	
+
+    private Bank bank;
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {    	
-    	int accountId= Integer.parseInt(req.getParameter("pAccountId"));
-        String amountExpression = req.getParameter("pAmountExpression");        
+    public void init() {
+        this.bank = Bank.getInstance();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
         try {
+            int accountId = Integer.parseInt(request.getParameter("pAccountId"));
+            String amountExpression = request.getParameter("pAmountExpression");
+
             bank.updateBankAccount(accountId, amountExpression);
-            req.setAttribute("TransactionOK", true);
-            Account a = bank.findAccountById(accountId);
-            List<Account> accounts = new ArrayList<Account>();
-            accounts.add(a);
-            req.setAttribute("accounts", accounts);
-            req.getRequestDispatcher("./view/view_accounts.jsp").forward(req, resp);   
+
+            response.sendRedirect(request.getContextPath()
+                    + "/accounts?messageType=success&message=Transfer+completed");
+        } catch (BaseException exception) {
+            GlobalExceptionHandler.handleException(exception, response);
         }
-        catch (Exception e) {
-        	req.setAttribute("TransactionOK", false);
-        } 
     }
 }

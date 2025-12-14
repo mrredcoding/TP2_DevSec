@@ -1,74 +1,38 @@
 package controllers;
 
-import jakarta.servlet.ServletException;
+import exceptions.BaseException;
+import exceptions.GlobalExceptionHandler;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
 import model.Bank;
 import model.User;
-import security.Authentication;
-import exceptions.UserAuthenticationException;
-import exceptions.UserAuthorizationException;
+import security.services.AuthenticationService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
-*
-* @author ouziri
-* @version 0.1
-*/
-
-@WebServlet("/CreateBankAccount")
+@WebServlet("/accounts/create")
 public class CreateBankAccountServlet extends HttpServlet {
-	
-	private Bank bank;
-	private Authentication authentication;
-	private String authorizedRoles; 
-	
-	@Override
-	public void init() throws ServletException {
-		bank = Bank.getInstance();
-		authentication = Authentication.getInstance ();
-		this.authorizedRoles = getServletContext().getInitParameter("CreateBankAccount");
-		System.out.println(this.authorizedRoles);
-		super.init();
-	}
-	
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			User user = authentication.getAuthenticatedUser(request);
-			System.out.println(user.getRoles());
-			authentication.getAuthorization (user, authorizedRoles);
-			super.service(request, response);
-		} catch (UserAuthenticationException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			request.setAttribute("error", "Vous n'êtes pas connecté !");	// petit probleme d'architecture (rôle) à corriger facultativement !
-			request.getRequestDispatcher("./view/error.jsp").forward(request, response);
-		} catch (UserAuthorizationException e) {
-			request.setAttribute("error", "Vous n'avez las autorisations requises !");
-			request.getRequestDispatcher("./view/error.jsp").forward(request, response);
-			//e.printStackTrace();
-		}
-	}
 
-	@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String clientEmail = request.getParameter("pClientEmail");
-        System.out.println(clientEmail);
-        //resp.addCookie(new Cookie("q", "secret"));
+    private Bank bank;
+    private AuthenticationService authenticationService;
+
+    @Override
+    public void init() {
+        this.bank = Bank.getInstance();
+        this.authenticationService = AuthenticationService.getInstance();
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            Account a = bank.createAccount(clientEmail);
-            List<Account> accounts = new ArrayList<>();
-            accounts.add(a);
-			request.setAttribute("accounts", accounts);
-        } catch (Exception ignored) {
+            User user = authenticationService.getPrincipal(request);
+            bank.createAccount(user.getEmail());
+
+            response.sendRedirect(request.getContextPath()
+                    + "/accounts?messageType=success&message=Account+created");
+        } catch (BaseException exception) {
+            GlobalExceptionHandler.handleException(exception, response);
         }
-        request.getRequestDispatcher("./view/view_accounts.jsp").forward(request, response);
     }
 }

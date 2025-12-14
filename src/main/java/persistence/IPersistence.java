@@ -1,27 +1,25 @@
 package persistence;
 
+import exceptions.BaseException;
 import model.Account;
 import model.User;
 
 import java.util.List;
 
 /**
-*
-* @author ouziri
-* @version 0.1
-*/
+ *
+ * @author Alonso Cédric
+ * @author Gomez Guillaume
+ * @version 1.0
+ */
 
 public interface IPersistence {
-	
-	Account save(Account account) throws Exception;
-	Account findAccountById (int accountId) throws Exception;
-	void updateBalance(int accountId, double newBalance) throws Exception;
-	List<Account> findAccountByOwnerEmail(String ownerEmail) throws Exception;
-	User findUserByEmail(String userEmail) throws Exception;
-	User validateUserByEmailPassword(String ownerEmail, String pwd) throws Exception;
-	
-	
-//	public Client findClientById (Long clientId); 
-//	public Client registerClient(Client client);
+
+    Account save(Account account) throws BaseException;
+    Account findAccountById (int accountId) throws BaseException;
+    void updateBalance(int accountId, double newBalance) throws BaseException;
+    List<Account> findAccountByOwnerEmail(String ownerEmail) throws BaseException;
+    User findUserByEmail(String userEmail) throws BaseException;
+    User validateUserByEmailPassword(String ownerEmail, String pwd) throws BaseException;
 
 }

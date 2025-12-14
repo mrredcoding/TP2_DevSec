@@ -1,5 +1,7 @@
 package controllers;
 
+import exceptions.BaseException;
+import exceptions.GlobalExceptionHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,90 +10,35 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 import model.Bank;
 import model.User;
-import security.Authentication;
-import exceptions.UserAuthenticationException;
-import exceptions.UserAuthorizationException;
+import security.services.AuthenticationService;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
-*
-* @author ouziri
-* @version 0.1
-*/
-
-@WebServlet("/viewAccount")
+@WebServlet("/accounts")
 public class ViewAccountServlet extends HttpServlet {
 
-	private Bank bank = Bank.getInstance();
-	
-	private Authentication authentication;
-	private String authorizedRoles; 
-	
-	@Override
-	public void init() throws ServletException {
-		bank = Bank.getInstance();
-		authentication = Authentication.getInstance ();
-		this.authorizedRoles = getServletContext().getInitParameter("ViewAccount");
-		super.init();
-	}
-	
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			User user = authentication.getAuthenticatedUser(request);
-			authentication.getAuthorization (user, authorizedRoles);
-			super.service(request, response);
-		} catch (UserAuthenticationException e) {
-			request.setAttribute("error", "Vous n'êtes pas connecté !");
-			request.getRequestDispatcher("./view/error.jsp").forward(request, response);
-		} catch (UserAuthorizationException e) {
-			request.setAttribute("error", "Vous n'avez pas las autorisations requises !");
-			request.getRequestDispatcher("./view/error.jsp").forward(request, response);
-		}
-	}
+    private Bank bank;
+    private AuthenticationService authenticationService;
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		String searchType = req.getParameter("searchBy");
-		if (searchType.equals("serachById")) {
-			int accountId= Integer.parseInt(req.getParameter("pAccountId"));
-			try {
-				Account a = bank.findAccountById(accountId);
-				if (a != null) {
-					List<Account> accounts = new ArrayList<Account>();
-					accounts.add(a);
-					req.setAttribute("accounts", accounts);
-				}
-			} catch (Exception e) {}
-		}
-		else {
-			if (searchType.equals("serachByOwnerEmail")) {
-				try {
-					String ownerEmail= req.getParameter("pOwnerEmail");
-					List<Account> accounts = bank.findAccountByOwnerEmail(ownerEmail);
-					if (accounts.size() > 0)						
-						req.setAttribute("accounts", accounts);
-				}
-				catch (Exception e) {}
-			}
-			else {	//recherche par owner email et account number/id
-				try {	// défaut : critère de recherche réalisé dans la Servlet  
-					int accountId= Integer.parseInt(req.getParameter("pAccountId"));
-					String ownerEmail= req.getParameter("pOwnerEmail");
-					Account a = bank.findAccountById(accountId);  
-					if (a != null &&a.getOwner().getEmail().equals(ownerEmail)) {
-						List<Account> accounts = new ArrayList<Account>();
-						accounts.add(a);
-						req.setAttribute("accounts", accounts);
-					}
-				}
-				catch (Exception e) {}
-			}	
-		}
-		req.getRequestDispatcher("./view/view_accounts.jsp").forward(req, resp);
-	}
+    @Override
+    public void init() {
+        this.bank = Bank.getInstance();
+        this.authenticationService = AuthenticationService.getInstance();
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            User user = authenticationService.getPrincipal(request);
+            bank.createAccount(user.getEmail());
+            List<Account> accounts = bank.findAccountByOwnerEmail(user.getEmail());
+
+            request.setAttribute("accounts", accounts);
+            request.getRequestDispatcher("/view/accounts.jsp").forward(request, response);
+        } catch (BaseException exception) {
+            GlobalExceptionHandler.handleException(exception, response);
+        }
+    }
 }

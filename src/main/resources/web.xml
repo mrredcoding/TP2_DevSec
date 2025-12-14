@@ -1,0 +1,77 @@
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <!-- HTTPS enforcement -->
+    <filter>
+        <filter-name>httpsFilter</filter-name>
+        <filter-class>security.filters.HttpsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Rate limiting -->
+    <filter>
+        <filter-name>rateLimitFilter</filter-name>
+        <filter-class>security.filters.RateLimitFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>rateLimitFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- CSRF protection -->
+    <filter>
+        <filter-name>csrfFilter</filter-name>
+        <filter-class>security.filters.CsrfFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>csrfFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Authentication -->
+    <filter>
+        <filter-name>authenticationFilter</filter-name>
+        <filter-class>security.filters.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Authorization -->
+    <filter>
+        <filter-name>authorizationFilter</filter-name>
+        <filter-class>security.filters.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorizationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Login -->
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>security.filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/auth/login</url-pattern>
+    </filter-mapping>
+
+    <!-- Logout -->
+    <filter>
+        <filter-name>logoutFilter</filter-name>
+        <filter-class>security.filters.LogoutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logoutFilter</filter-name>
+        <url-pattern>/auth/logout</url-pattern>
+    </filter-mapping>
+
+</web-app>
