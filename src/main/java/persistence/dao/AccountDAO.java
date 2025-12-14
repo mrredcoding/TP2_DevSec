@@ -44,7 +44,7 @@ public class AccountDAO {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             List<Account> result = session.createQuery(
-                            "FROM Account a WHERE a.owner.email = :email", Account.class)
+                            "FROM Account account WHERE account.owner.email = :email", Account.class)
                     .setParameter("email", ownerEmail)
                     .list();
 

@@ -10,7 +10,7 @@ package exceptions;
 @ResponseStatus(status=404, reason="Not Found")
 public class UserNotFoundException extends BaseException {
 
-    public UserNotFoundException(String cause) {
-        super ("No user found " + cause);
+    public UserNotFoundException(String email) {
+        super ("No user found with email: " + email);
     }
 }
