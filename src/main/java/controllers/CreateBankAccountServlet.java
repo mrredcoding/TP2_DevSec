@@ -32,7 +32,7 @@ public class CreateBankAccountServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath()
                     + "/accounts?messageType=success&message=Account+created");
         } catch (BaseException exception) {
-            GlobalExceptionHandler.handleException(exception, response);
+            GlobalExceptionHandler.resolveException(exception, response);
         }
     }
 }

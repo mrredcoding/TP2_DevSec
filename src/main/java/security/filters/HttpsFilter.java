@@ -16,7 +16,7 @@ public class HttpsFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         if (!httpRequest.isSecure()) {
-            GlobalExceptionHandler.handleException(new RequestNotSecureException(), httpResponse);
+            GlobalExceptionHandler.resolveException(new RequestNotSecureException(), httpResponse);
             return;
         }
 

@@ -31,6 +31,6 @@ public class AuthorizationFilter implements Filter {
         Object principal = (session != null) ? session.getAttribute("principal") : null;
 
         if (!(principal instanceof User user) || !user.isAdmin())
-            GlobalExceptionHandler.handleException(new ForbiddenException(), httpResponse);
+            GlobalExceptionHandler.resolveException(new ForbiddenException(), httpResponse);
     }
 }

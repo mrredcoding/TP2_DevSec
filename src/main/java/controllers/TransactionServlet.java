@@ -33,7 +33,7 @@ public class TransactionServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath()
                     + "/accounts?messageType=success&message=Transfer+completed");
         } catch (BaseException exception) {
-            GlobalExceptionHandler.handleException(exception, response);
+            GlobalExceptionHandler.resolveException(exception, response);
         }
     }
 }

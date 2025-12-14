@@ -27,7 +27,7 @@ public class AuthenticationFilter implements Filter {
         Object principal = (session != null) ? session.getAttribute("principal") : null;
 
         if (!(principal instanceof User)) {
-            GlobalExceptionHandler.handleException(new UnauthorizedException(), httpResponse);
+            GlobalExceptionHandler.resolveException(new UnauthorizedException(), httpResponse);
             return;
         }
 

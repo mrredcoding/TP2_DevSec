@@ -34,7 +34,7 @@ public class LoginFilter implements Filter {
                 httpRequest.getSession(true).setAttribute("principal", user);
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/index.jsp?messageType=success&message=Successful+connection");
             } catch (BaseException exception) {
-                GlobalExceptionHandler.handleException(exception, httpResponse);
+                GlobalExceptionHandler.resolveException(exception, httpResponse);
             }
             return;
         }

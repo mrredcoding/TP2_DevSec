@@ -23,7 +23,7 @@ public class RateLimitFilter implements Filter {
         String key = resolveKey(httpRequest);
 
         if (!limiter.tryConsume(key)) {
-            GlobalExceptionHandler.handleException(new TooManyRequestsException(), httpResponse);
+            GlobalExceptionHandler.resolveException(new TooManyRequestsException(), httpResponse);
             return;
         }
 

@@ -10,7 +10,7 @@ public class GlobalExceptionHandler {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static void handleException(BaseException exception, HttpServletResponse response)
+    public static void resolveException(BaseException exception, HttpServletResponse response)
             throws IOException {
 
         writeBaseExceptionResponse(exception, response);

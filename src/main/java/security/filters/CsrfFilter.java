@@ -32,7 +32,7 @@ public class CsrfFilter implements Filter {
         String expected = (String) session.getAttribute("CSRF_TOKEN");
 
         if (!Objects.equals(token, expected)) {
-            GlobalExceptionHandler.handleException(new ForbiddenException(), httpResponse);
+            GlobalExceptionHandler.resolveException(new ForbiddenException(), httpResponse);
             return;
         }
 

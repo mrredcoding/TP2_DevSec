@@ -38,7 +38,7 @@ public class ViewAccountServlet extends HttpServlet {
             request.setAttribute("accounts", accounts);
             request.getRequestDispatcher("/view/accounts.jsp").forward(request, response);
         } catch (BaseException exception) {
-            GlobalExceptionHandler.handleException(exception, response);
+            GlobalExceptionHandler.resolveException(exception, response);
         }
     }
 }
