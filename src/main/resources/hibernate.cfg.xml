@@ -6,9 +6,9 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.username">${DB_USER}</property>
-        <property name="hibernate.connection.password">${DB_PASSWORD}</property>
-        <property name="hibernate.connection.url">${DB_URL}</property>
+        <property name="hibernate.connection.username">bank</property>
+        <property name="hibernate.connection.password">bank</property>
+        <property name="hibernate.connection.url">bankdb</property>
 
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
