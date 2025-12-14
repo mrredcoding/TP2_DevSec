@@ -8,10 +8,11 @@ package exceptions;
  */
 
 public abstract class BaseException extends Exception {
-    private String message;
+    private final String message;
 
     public BaseException(String message) {
         super(message);
+        this.message = message;
     }
 
     public String getMessage() {
